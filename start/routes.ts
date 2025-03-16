@@ -18,8 +18,34 @@
 |
 */
 
+import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
+Route.get('/', async ({ response }) => {
+    const isReady = HealthCheck.isReady()
+
+    return response.ok({
+        message: 'Welcome to SGSE API',
+        data: {
+            isReady,
+        },
+    })
+})
+
+Route.get('/test-healthy-check', async ({ response }) => {
+    const report = await HealthCheck.getReport()
+
+    const status = report.healthy ? 200 : 400
+
+    return response.status(status).json({
+        message: 'Healthy check',
+        data: report,
+    })
+})
+
+Route.any('*', async ({ response }) => {
+    return response.notFound({
+        message: 'Route not found',
+        data: null,
+    })
 })
