@@ -12,15 +12,43 @@ export function authRoutes() {
 }
 
 export function usersRoutes() {
+    Route.resource('users', 'UsersController')
+        .apiOnly()
+        .middleware({
+            index: ['qs', 'params'],
+            show: 'params',
+            update: 'params',
+            destroy: 'params',
+        })
+}
+
+export function devicesRoutes() {
+    Route.resource('devices', 'DevicesController')
+        .apiOnly()
+        .middleware({
+            index: ['qs', 'params'],
+            show: 'params',
+            update: 'params',
+            destroy: 'params',
+        })
+}
+
+export function employeesRoutes() {
+    Route.resource('employees', 'EmployeesController')
+        .apiOnly()
+        .middleware({
+            index: ['qs', 'params'],
+            show: 'params',
+            update: 'params',
+            destroy: 'params',
+        })
+}
+
+export function apiV1Routes() {
     Route.group(() => {
-        Route.resource('users', 'UsersController')
-            .apiOnly()
-            .middleware({
-                index: ['qs', 'params'],
-                show: 'params',
-                update: 'params',
-                destroy: 'params',
-            })
+        usersRoutes()
+        devicesRoutes()
+        employeesRoutes()
     })
         .prefix('api/v1')
         .middleware('auth')

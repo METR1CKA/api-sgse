@@ -13,7 +13,7 @@ export default class extends BaseSchema {
                 .inTable('employees')
                 .onDelete('CASCADE')
             table.enum('type', ['PHONE/MOBILE', 'LAPTOP']).notNullable()
-            table.string('cve_activo', 50).notNullable()
+            table.string('cve_activo', 50).notNullable().unique()
             table.string('brand', 100).notNullable()
             table.string('model', 100).notNullable()
             table.boolean('active').notNullable().defaultTo(true)

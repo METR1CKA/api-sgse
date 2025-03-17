@@ -3,6 +3,19 @@ import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 import Device from './Device'
 
+export interface EmployeeData {
+    number?: string | null
+    name: string
+    lastname: string
+    phone_number?: string | null
+    gmail?: string | null
+    gmail_pass?: string | null
+    email?: string | null
+    email_pass?: string | null
+    department?: string | null
+    comments?: string | null
+}
+
 export default class Employee extends BaseModel {
     @column({
         isPrimary: true,
@@ -10,7 +23,7 @@ export default class Employee extends BaseModel {
     public id: number
 
     @column()
-    public number?: string
+    public number?: string | null
 
     @column()
     public name: string
@@ -19,25 +32,25 @@ export default class Employee extends BaseModel {
     public lastname: string
 
     @column()
-    public phone_number?: string
+    public phone_number?: string | null
 
     @column()
-    public gmail?: string
+    public gmail?: string | null
 
     @column()
-    public gmail_pass?: string
+    public gmail_pass?: string | null
 
     @column()
-    public email?: string
+    public email?: string | null
 
     @column()
-    public email_pass?: string
+    public email_pass?: string | null
 
     @column()
-    public department?: string
+    public department?: string | null
 
     @column()
-    public comments?: string
+    public comments?: string | null
 
     @column()
     public active: boolean

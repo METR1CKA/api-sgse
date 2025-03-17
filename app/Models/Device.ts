@@ -5,6 +5,14 @@ import Employee from './Employee'
 
 export type DeviceType = 'PHONE/MOBILE' | 'LAPTOP'
 
+export interface DeviceData {
+    employee_id: number
+    type: DeviceType
+    cve_activo: string
+    brand: string
+    model: string
+}
+
 export default class Device extends BaseModel {
     @column({
         isPrimary: true,

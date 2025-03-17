@@ -1,40 +1,45 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import EmployeeValidator from 'App/Validators/EmployeeValidator'
 import { requestValidatorErrorMessages } from 'App/Utils/Tools'
-import UserValidator from 'App/Validators/UserValidator'
-import User, { UserCreds } from 'App/Models/User'
+import Employee, { EmployeeData } from 'App/Models/Employee'
 import Database from '@ioc:Adonis/Lucid/Database'
 
-export default class UsersController {
+export default class EmployeesController {
     public async index({ response }: HttpContextContract) {
-        const users = await User.all()
+        const employees = await Employee.query()
+            .preload('devices')
+            .orderBy('id', 'desc')
 
         return response.ok({
             message: 'Usuarios obtenidos',
-            data: users,
+            data: employees,
         })
     }
 
     public async show({ params, response }: HttpContextContract) {
-        const user = await User.find(params.id)
+        const employee = await Employee.query()
+            .preload('devices')
+            .where({ id: params.id })
+            .first()
 
-        if (!user) {
+        if (!employee) {
             return response.notFound({
-                message: 'Usuario no encontrado',
+                message: 'Empleado no encontrado',
                 data: null,
             })
         }
 
         return response.ok({
-            message: 'Usuario encontrado',
-            data: user,
+            message: 'Empleado encontrado',
+            data: employee,
         })
     }
 
     public async store({ request, response }: HttpContextContract) {
-        let data: UserCreds
+        let data: EmployeeData
 
         try {
-            data = await request.validate(UserValidator)
+            data = await request.validate(EmployeeValidator)
         } catch (error) {
             return response.ok({
                 message: 'Datos no válidos',
@@ -43,28 +48,28 @@ export default class UsersController {
         }
 
         try {
-            await User.create({
+            await Employee.create({
                 ...data,
                 active: true,
             })
         } catch (error) {
             return response.internalServerError({
-                message: 'Error al crear el usuario',
+                message: 'Error al guardar el empleado',
                 data: error,
             })
         }
 
         return response.created({
-            message: 'Usuario creado',
+            message: 'Empleado guardado',
             data: null,
         })
     }
 
     public async update({ params, request, response }: HttpContextContract) {
-        let data: Partial<UserCreds>
+        let data: Partial<EmployeeData>
 
         try {
-            data = await request.validate(UserValidator)
+            data = await request.validate(EmployeeValidator)
         } catch (error) {
             return response.ok({
                 message: 'Datos no válidos',
@@ -72,11 +77,11 @@ export default class UsersController {
             })
         }
 
-        const user = await User.find(params.id)
+        const employee = await Employee.find(params.id)
 
-        if (!user) {
+        if (!employee) {
             return response.notFound({
-                message: 'Usuario no encontrado',
+                message: 'Empleado no encontrado',
                 data: null,
             })
         }
@@ -84,32 +89,32 @@ export default class UsersController {
         const trx = await Database.transaction()
 
         try {
-            user.useTransaction(trx)
+            employee.useTransaction(trx)
 
-            await user.merge(data).save()
+            await employee.merge(data).save()
 
             await trx.commit()
         } catch (error) {
             await trx.rollback()
 
             return response.internalServerError({
-                message: 'Error al actualizar el usuario',
+                message: 'Error al actualizar el empleado',
                 data: error,
             })
         }
 
         return response.ok({
-            message: 'Usuario actualizado',
+            message: 'Empleado actualizado',
             data: null,
         })
     }
 
     public async destroy({ params, response }: HttpContextContract) {
-        const user = await User.find(params.id)
+        const employee = await Employee.find(params.id)
 
-        if (!user) {
+        if (!employee) {
             return response.notFound({
-                message: 'Usuario no encontrado',
+                message: 'Empleado no encontrado',
                 data: null,
             })
         }
@@ -117,22 +122,22 @@ export default class UsersController {
         const trx = await Database.transaction()
 
         try {
-            user.useTransaction(trx)
+            employee.useTransaction(trx)
 
-            await user.merge({ active: !user.active }).save()
+            await employee.merge({ active: !employee.active }).save()
 
             await trx.commit()
         } catch (error) {
             await trx.rollback()
 
             return response.internalServerError({
-                message: 'Error al desactivar/activar usuario',
+                message: 'Error al eliminar el empleado',
                 data: error,
             })
         }
 
         return response.ok({
-            message: 'Usuario desactivado/activado',
+            message: 'Empleado eliminado',
             data: null,
         })
     }
