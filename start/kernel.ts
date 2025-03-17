@@ -40,5 +40,7 @@ Server.middleware.register([() => import('@ioc:Adonis/Core/BodyParser')])
 */
 Server.middleware.registerNamed({
     'log-requests': () => import('App/Middleware/LogRequest'),
+    params: () => import('App/Middleware/Param'),
     auth: () => import('App/Middleware/Auth'),
+    qs: () => import('App/Middleware/Qs'),
 })

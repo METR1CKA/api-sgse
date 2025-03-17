@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import LoginValidator from 'App/Validators/LoginValidator'
+import { requestValidatorErrorMessages } from 'App/Utils/Tools'
+import UserValidator from 'App/Validators/UserValidator'
 import User, { UserCreds } from 'App/Models/User'
 import ApiToken from 'App/Models/ApiToken'
 
@@ -9,9 +10,12 @@ export default class AuthController {
         let loginData: UserCreds
 
         try {
-            loginData = await request.validate(LoginValidator)
+            loginData = await request.validate(UserValidator)
         } catch (error) {
-            return
+            return response.badRequest({
+                message: 'Validación fallida',
+                data: requestValidatorErrorMessages(error),
+            })
         }
 
         const { username, password } = loginData

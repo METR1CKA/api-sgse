@@ -20,10 +20,11 @@
 
 import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 import Route from '@ioc:Adonis/Core/Route'
-import { authRoutes } from './auth.routes'
+import { authRoutes, usersRoutes } from './api-v1.routes'
 
 Route.group(() => {
     authRoutes()
+    usersRoutes()
 
     Route.get('/', async ({ response }) => {
         const isReady = HealthCheck.isReady()
