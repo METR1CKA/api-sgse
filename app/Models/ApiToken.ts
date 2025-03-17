@@ -1,6 +1,7 @@
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { dateTimeToString } from 'App/Utils/CustomDateTime'
+import { string } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import User from './User'
 
@@ -89,7 +90,7 @@ export default class ApiToken extends BaseModel {
         await currentUser.merge({ rememberMeToken: token }).save()
 
         return {
-            type,
+            type: string.sentenceCase(type),
             token,
             expiresAt: dateTimeToString({ dateTime: expiresAt! }),
         }
