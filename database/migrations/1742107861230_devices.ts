@@ -6,6 +6,12 @@ export default class extends BaseSchema {
     public async up() {
         this.schema.createTable(this.tableName, (table) => {
             table.increments('id').primary()
+            table
+                .integer('employee_id')
+                .unsigned()
+                .references('id')
+                .inTable('employees')
+                .onDelete('CASCADE')
             table.enum('type', ['PHONE/MOBILE', 'LAPTOP']).notNullable()
             table.string('cve_activo', 50).notNullable()
             table.string('brand', 100).notNullable()

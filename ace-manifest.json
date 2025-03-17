@@ -1,5 +1,47 @@
 {
     "commands": {
+        "generate:mockData": {
+            "settings": {
+                "loadApp": true,
+                "stayAlive": false
+            },
+            "commandPath": "./commands/GenerateMockData",
+            "commandName": "generate:mockData",
+            "description": "Generate mock data for the application",
+            "args": [
+                {
+                    "type": "string",
+                    "propertyName": "type",
+                    "name": "type",
+                    "required": false,
+                    "description": "The type of data to generate, you enter the value: 'user' or 'devices' or 'employees'"
+                }
+            ],
+            "aliases": [
+                "g:m",
+                "g:mock",
+                "mock",
+                "generate:mock",
+                "mock:data",
+                "g:mockData"
+            ],
+            "flags": [
+                {
+                    "name": "count",
+                    "propertyName": "count",
+                    "type": "number",
+                    "description": "The number of records to generate",
+                    "alias": "c"
+                },
+                {
+                    "name": "assign",
+                    "propertyName": "assign",
+                    "type": "boolean",
+                    "description": "Assign employees to a device randomly",
+                    "alias": "a"
+                }
+            ]
+        },
         "dump:rcfile": {
             "settings": {},
             "commandPath": "@adonisjs/core/build/commands/DumpRc",
@@ -571,5 +613,12 @@
             ]
         }
     },
-    "aliases": {}
+    "aliases": {
+        "g:m": "generate:mockData",
+        "g:mock": "generate:mockData",
+        "mock": "generate:mockData",
+        "generate:mock": "generate:mockData",
+        "mock:data": "generate:mockData",
+        "g:mockData": "generate:mockData"
+    }
 }

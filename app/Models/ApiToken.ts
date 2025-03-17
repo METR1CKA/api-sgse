@@ -55,7 +55,7 @@ export default class ApiToken extends BaseModel {
         request.request.headers.authorization = `Bearer ${token}`
     }
 
-    public static async formatExpiresAt(tokenHash?: string) {
+    public static async formatExpiresAt({ tokenHash }: { tokenHash?: string }) {
         if (!tokenHash) return null
 
         const api_token = await this.query().where({ token: tokenHash }).first()
@@ -72,7 +72,7 @@ export default class ApiToken extends BaseModel {
 
         const revoked = await this.query().where({ user_id: currentUser.id })
 
-        return revoked.length == 0
+        return revoked.length === 0
     }
 
     public static async getApiToken({

@@ -1,6 +1,7 @@
 import { dateTimeToString } from 'App/Utils/CustomDateTime'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import Device from './Device'
 
 export default class Employee extends BaseModel {
     @column({
@@ -9,10 +10,7 @@ export default class Employee extends BaseModel {
     public id: number
 
     @column()
-    public device_id: number
-
-    @column()
-    public number?: number
+    public number?: string
 
     @column()
     public name: string
@@ -56,4 +54,10 @@ export default class Employee extends BaseModel {
         serialize: (value: DateTime) => dateTimeToString({ dateTime: value }),
     })
     public updatedAt: DateTime
+
+    @hasMany(() => Device, {
+        localKey: 'id',
+        foreignKey: 'employee_id',
+    })
+    public devices: HasMany<typeof Device>
 }

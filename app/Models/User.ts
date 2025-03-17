@@ -1,7 +1,19 @@
-import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
+import {
+    column,
+    beforeSave,
+    BaseModel,
+    hasMany,
+    HasMany,
+} from '@ioc:Adonis/Lucid/Orm'
 import { dateTimeToString } from 'App/Utils/CustomDateTime'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { DateTime } from 'luxon'
+import ApiToken from './ApiToken'
+
+export type UserCreds = {
+    username: string
+    password: string
+}
 
 export default class User extends BaseModel {
     @column({
@@ -53,4 +65,10 @@ export default class User extends BaseModel {
             user.password = await Hash.make(user.password)
         }
     }
+
+    @hasMany(() => ApiToken, {
+        localKey: 'id',
+        foreignKey: 'user_id',
+    })
+    public auth_factors: HasMany<typeof ApiToken>
 }

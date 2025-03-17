@@ -9,15 +9,17 @@ type DateFormat = (typeof DATE_FORMATS)[keyof typeof DATE_FORMATS]
 
 const localZone = 'America/Monterrey'
 
-export function dateTimeToString({
-    dateTime,
-    format = 'yyyy-MM-dd HH:mm:ss',
-    zone = localZone,
-}: {
-    dateTime: DateTime
+export function dateTimeToString(params?: {
+    dateTime?: DateTime
     format?: DateFormat
     zone?: string
 }) {
+    const {
+        dateTime = now(),
+        format = 'yyyy-MM-dd HH:mm:ss',
+        zone = localZone,
+    } = params || {}
+
     return dateTime.setZone(zone).toFormat(format)
 }
 

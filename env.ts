@@ -24,4 +24,8 @@ export default Env.rules({
 
     // Database SQLite3 configuration only need this variable, others drivers and DBMS need more variables
     DB_CONNECTION: Env.schema.string(),
+
+    // CREDS for Initial User
+    ADMIN_USERNAME: Env.schema.string(),
+    ADMIN_PASSWORD: Env.schema.string(),
 })
